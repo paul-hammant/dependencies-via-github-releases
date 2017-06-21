@@ -25,22 +25,53 @@ import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.codehaus.plexus.component.annotations.Component;
+import org.eclipse.aether.metadata.Metadata;
+import org.eclipse.aether.spi.connector.layout.RepositoryLayout;
+
+import java.net.URI;
+import java.util.List;
+
 
 @Component( role = ArtifactRepositoryLayout.class, hint = "github-releases" )
 public class GitHubReleasesRepositoryLayout
-    implements ArtifactRepositoryLayout
+    implements ArtifactRepositoryLayout, RepositoryLayout
 {
 
+    public GitHubReleasesRepositoryLayout() {
+        System.out.println("GitHubReleasesRepositoryLayout--!");
+        try {
+            throw new UnsupportedOperationException("DEEBUG");
+        } catch (UnsupportedOperationException e) {
+            e.printStackTrace(System.out);
+        }
+    }
+
+    public URI getLocation(org.eclipse.aether.artifact.Artifact artifact, boolean b) {
+        return null;
+    }
+
+    public URI getLocation(Metadata metadata, boolean b) {
+        return null;
+    }
+
+    public List<Checksum> getChecksums(org.eclipse.aether.artifact.Artifact artifact, boolean b, URI uri) {
+        return null;
+    }
+
+    public List<Checksum> getChecksums(Metadata metadata, boolean b, URI uri) {
+        return null;
+    }
 
     private static final char GROUP_SEPARATOR = '.';
 
     public String getId()
     {
-        return "flat";
+        return "github-releases";
     }
 
     public String pathOf( Artifact artifact )
     {
+        System.out.println("GitHubReleasesRepositoryLayout.pathOf--> " + artifact.getClassifier() + " " + artifact.getId() + " " + artifact.getType() + " " + artifact.getBaseVersion());
         StringBuilder path = new StringBuilder( 128 );
         path.append(artifact.getGroupId()).append("/");
         path.append(artifact.getArtifactId()).append("-").append(artifact.getClassifier());
@@ -57,6 +88,8 @@ public class GitHubReleasesRepositoryLayout
 
     private String pathOfRepositoryMetadata( String filename )
     {
+        System.err.println("GitHubReleasesRepositoryLayout.pathOfRepositoryMetadata--> " +  filename);
+
         StringBuilder path = new StringBuilder( 128 );
 
         path.append( filename );
